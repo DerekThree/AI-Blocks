@@ -1,8 +1,30 @@
 CLASSES = \
-	Board
+	Board.java \
+	Node.java \
+	Agent.java
 
-default:
-	javac -g -d . source/$(CLASSES).java
+all: classes input
+	java main.java < input
 
-run: default
-	java main.java
+run:
+	java main.java < input
+
+driver: classes
+	java driver.java
+
+input:
+	touch input
+
+classes: utils $(CLASSES:.java=.class)
+
+utils:
+	javac -g -d . Utils.java
+
+clean:
+	$(RM) *.class
+
+JFLAGS = -g -d .
+JC = javac
+.SUFFIXES: .java .class
+.java.class:
+	$(JC) $(JFLAGS) $*.java
