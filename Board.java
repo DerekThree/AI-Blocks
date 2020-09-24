@@ -7,7 +7,7 @@ public class Board{
 	static private final int NONE = -1;
 			
 	public Board(){
-		String s = "1 2 3 4 5 6 7 8 9 10 11 12 13 4 15 0";
+		String s = "1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 0";
 		state = Utils.tokenize(s);
 		pos = 0;
 	}
@@ -58,7 +58,9 @@ public class Board{
 	}
 
 	public Board right(){
-		int next = (pos % 4 == 0) ? NONE : pos + 1;
+		int next;
+		if (pos == 15) next = 0;
+		else next = (pos % 4 == 0) ? NONE : pos + 1;
 		if (next == NONE) return null;
 		else return getNewBoard(next);
 	}

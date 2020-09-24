@@ -32,6 +32,11 @@ public class driver{
 					b.draw();
 					break;
 				case "q":
+					byte[] state = b.getState();
+					for (int i=1; i<16; i++){
+						System.out.print(state[i] + " ");
+					}
+					System.out.println(state[0]);
 					return;
 			}
 			key = myObj.nextLine();
