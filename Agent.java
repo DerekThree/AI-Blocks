@@ -4,7 +4,8 @@ import java.util.*;
 
 // AI agent that computes and displays a solution to a puzzle
 public class Agent {
-//	private freeMemory = Runtime.getRuntime().freeMemory();
+	private long time = System.nanoTime();
+	private long freeMemory = Runtime.getRuntime().freeMemory();
 	private Node root = new Node(new Board(), null, 'X'); // BSF results
 	private int nodeCount = 1;
 	private String userState; // starting game state 
@@ -33,11 +34,12 @@ public class Agent {
 	}
 
 	// creates children and puts them in queue
+	// each child remembers one move back home
 	void expand(Node node){
-		enqueue(node.board.up(), node, 'U');
-		enqueue(node.board.down(), node, 'D');
-		enqueue(node.board.left(), node, 'L');
-		enqueue(node.board.right(), node, 'R');
+		enqueue(node.board.up(), node, 'D');
+		enqueue(node.board.down(), node, 'U');
+		enqueue(node.board.left(), node, 'R');
+		enqueue(node.board.right(), node, 'L');
 	}
 
 	// creates and enqueues a Node containing newBoard
@@ -66,7 +68,7 @@ public class Agent {
 
 	void displayStats(){
 		System.out.println("Number of Nodes expanded: " + nodeCount);
-		System.out.println("Time Taken: ");
-		System.out.println("Memory Used: ");
+		System.out.println("Time Taken: " + (System.nanoTime() - time) + " ns");
+		System.out.println("Memory Used: " + (freeMemory - Runtime.getRuntime().freeMemory()) + " bytes");
 	}
 }
