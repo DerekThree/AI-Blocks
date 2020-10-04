@@ -3,8 +3,10 @@ Derek Ochal
 
 Command to run the code:
 java main.java
+or
+java main.java < input
 
-Compiler version
+Compiler version:
 # version 14.0.1+7-1ubuntu1
 
 Command to install the compiler package:

@@ -6,19 +6,21 @@ import java.util.*;
 public class Agent {
 	private long time = System.nanoTime();
 	private long freeMemory = Runtime.getRuntime().freeMemory();
-	private Node root = new Node(new Board(), null, 'X'); // BSF results
 	private int nodeCount = 1;
-	private String userState; // starting game state 
+	final private Board userBoard;
+	final private String userState; // starting game state 
 	// visited nodes stored here as strings
 	private HashSet<String> visited = new HashSet<String>();
 	// nodes waiting to be expanded
-	private LinkedList<Node> queue = new LinkedList<Node>();
+	private Fringe queue = new Fringe();
 
 	// takes user input as String with 16 numbers, space seperated
 	// input represents starting game state
-	public Agent(String input){
-		queue.add(root);
-		this.userState = Utils.encode(Utils.tokenize(input));
+	public Agent(String input, boolean manSwitch){
+		this.userBoard = new Board(input);
+		this.userState = Utils.encode(userBoard.getState());
+		queue.add(new Node(new Board(), userBoard, null, 'X'));
+		queue.manSwitch = manSwitch;
 		search();
 	}
 
@@ -26,8 +28,10 @@ public class Agent {
 	void search(){
 		while(!queue.isEmpty()){
 			Node temp = queue.remove();
-			if (temp.encode().equals(userState))
+			if (temp.encode().equals(userState)) {
 				displaySolution(temp);
+				return;
+			}
 			else
 				expand(temp);
 		}
@@ -45,7 +49,7 @@ public class Agent {
 	// creates and enqueues a Node containing newBoard
 	void enqueue(Board newBoard, Node parent, char action){
 		if (newBoard!=null){
-			Node newNode = new Node(newBoard, parent, action);
+			Node newNode = new Node(newBoard, userBoard, parent, action);
 			// if not visited then enqueue
 			if (!visited.contains(newNode.encode())){
 				queue.add(newNode);
@@ -57,18 +61,18 @@ public class Agent {
 
 	void displaySolution(Node node){
 		System.out.print("Moves: ");
-		while (node!=root){
+		while (node.parent!=null){
 			System.out.print(node.action);
 			node = node.parent;
 		}
 		System.out.println();
 		displayStats();
-		System.exit(0);
 	}
 
 	void displayStats(){
 		System.out.println("Number of Nodes expanded: " + nodeCount);
 		System.out.println("Time Taken: " + (System.nanoTime() - time) + " ns");
 		System.out.println("Memory Used: " + (freeMemory - Runtime.getRuntime().freeMemory()) + " bytes");
+		System.out.println();
 	}
 }

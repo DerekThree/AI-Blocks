@@ -4,6 +4,10 @@ import java.util.Scanner;
 public class main{
 	public static void main(String[] argv){
 		// new Agent(stdin)
-	   new Agent(new Scanner(System.in).nextLine());
+		String input = new Scanner(System.in).nextLine();
+		System.out.println("Number of misplaced tiles search:");
+	   new Agent(input, false);
+		System.out.println("Manhattan distance search:");
+	   new Agent(input, true);
 	}
 }

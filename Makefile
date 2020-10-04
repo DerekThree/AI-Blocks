@@ -1,6 +1,7 @@
 CLASSES = \
 	Board.java \
 	Node.java \
+	Fringe.java \
 	Agent.java
 
 all: classes input
