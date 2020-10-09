@@ -3,7 +3,7 @@ package bin;
 import java.util.*;
 
 public class Fringe {		  
-	LinkedList<Node> list = new LinkedList<>();
+	private LinkedList<Node> list = new LinkedList<>();
 	public boolean manSwitch = false;
 
 	void add(Node node) {
@@ -18,7 +18,7 @@ public class Fringe {
 		list.clear();
 	}
 
-	Node pollByMisplaced() {
+	private Node pollByMisplaced() {
 		if (list.isEmpty()) return null;
 		Node temp = list.element();
 		for (Node node : list)
@@ -27,11 +27,11 @@ public class Fringe {
 		return temp;
 	}
 
-	Node pollByManhattan() {
+	private Node pollByManhattan() {
 		if (list.isEmpty()) return null;
 		Node temp = list.element();
 		for (Node node : list)
-			if (node.misplaced < temp.misplaced) temp = node;
+			if (node.manhattan < temp.manhattan) temp = node;
 		list.remove(temp);
 		return temp;
 	}

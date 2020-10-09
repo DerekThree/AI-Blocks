@@ -10,19 +10,26 @@ public class Node {
 	public final int misplaced;
 	public final int manhattan;
 
-	public Node(Board board, Board userBoard, Node parent, char action){
-		this.board = board;
+	public Node(Board currentBoard, Board finalBoard, Node parent, char action){
+		this.board = currentBoard;
 		this.parent = parent;
 		this.action = action;
 
 		// count manhattan and misplaced
 		int manTemp = 0;
 		int misTemp = 0;
-		for (int i=0; i<board.getState().length; i++) {
-			if (userBoard.getState()[i] != board.getState()[i]) {
+		int bLength = board.getState().length;
+		for (int holderNum=0; holderNum<bLength; holderNum++) {
+			if (currentBoard.getState()[holderNum] != finalBoard.getState()[holderNum]) {
 				misTemp++;
-				int diff = i - findIndex(userBoard.getState(), i);
-				manTemp += diff>0 ? diff : -diff;
+				// count manhattan
+				int tilesCurrentHolder = findIndex(currentBoard.getState(), finalBoard.getState()[holderNum]);
+				if (tilesCurrentHolder == 0) tilesCurrentHolder = bLength; // 0 -> 16
+				int tilesFinalHolder = holderNum;
+				if (tilesFinalHolder == 0) tilesFinalHolder = bLength; // 0 -> 16
+				int diff = tilesFinalHolder - tilesCurrentHolder;
+				if (diff<0) diff = -diff;
+				manTemp += (diff/4) + (diff%4); // 4 is num of columns
 			}
 		}
 		manhattan = manTemp;
