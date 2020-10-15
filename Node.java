@@ -9,13 +9,11 @@ public class Node {
 	public final char action;
 	public final int misplaced;
 	public final int manhattan;
-	public Fringe queue = new Fringe();
 
 	public Node(Board currentBoard, Board finalBoard, Node parent, char action){
 		this.board = currentBoard;
-		this.action = action;
 		this.parent = parent;
-		if (parent!=null) parent.queue.add(this);
+		this.action = action;
 
 		// count manhattan and misplaced
 		int manTemp = 0;

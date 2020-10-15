@@ -4,7 +4,7 @@ import java.util.*;
 
 public class Fringe {		  
 	private LinkedList<Node> list = new LinkedList<>();
-	public static boolean manSwitch = false;
+	public boolean manSwitch = false;
 
 	void add(Node node) {
 		list.add(node);

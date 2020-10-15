@@ -3,7 +3,7 @@ package bin;
 // TODO: delete movements
 public class Board{
 	private byte state[]; // game state
-	public int pos; // position of the blank
+	private int pos; // position of the blank
 	static private final int NONE = -1;
 			
 	public Board(){
