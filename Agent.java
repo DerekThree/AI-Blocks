@@ -11,30 +11,31 @@ public class Agent {
 	final private String userState; // starting game state 
 	// visited nodes stored here as strings
 	private HashSet<String> visited = new HashSet<String>();
-	// nodes waiting to be expanded
-	private Fringe queue = new Fringe();
 
 	// takes user input as String with 16 numbers, space seperated
 	// input represents starting game state
 	public Agent(String input, boolean manSwitch){
 		this.userBoard = new Board(input);
 		this.userState = Utils.encode(userBoard.getState());
-		queue.add(new Node(new Board(), userBoard, null, 'X'));
-		queue.manSwitch = manSwitch;
-		search();
+		Fringe.manSwitch = manSwitch;
+		Node root = new Node(new Board(), userBoard, null, 'X');
+		for (int i=0; !search(root, i); i++);
 	}
 
-	// takes node from queue, checks for solution, and expands it
-	void search(){
-		while(!queue.isEmpty()){
-			Node temp = queue.remove();
-			if (temp.encode().equals(userState)) {
-				displaySolution(temp);
-				return;
+	// takes child from node's queue, checks for solution, and expands it
+	boolean search(Node node, int i){
+		if (i<=0) return false;
+		expand(node);
+		while(!node.queue.isEmpty()){
+			Node child = node.queue.remove();
+System.out.print(node.queue.length());
+			if (child.encode().equals(userState)) {
+				displaySolution(child);
+				return true;
 			}
-			else
-				expand(temp);
+			if (search(child, i-1)) return true;
 		}
+		return false;
 	}
 
 	// creates children and puts them in queue
@@ -52,7 +53,7 @@ public class Agent {
 			Node newNode = new Node(newBoard, userBoard, parent, action);
 			// if not visited then enqueue
 			if (!visited.contains(newNode.encode())){
-				queue.add(newNode);
+				parent.queue.add(newNode);
 				nodeCount++;
 				visited.add(newNode.encode());
 			}
@@ -71,6 +72,7 @@ public class Agent {
 
 	void displayStats(){
 		System.out.println("Number of Nodes expanded: " + nodeCount);
+		
 		System.out.println("Time Taken: " + (System.nanoTime() - time) + " ns");
 		System.out.println("Memory Used: " + (freeMemory - Runtime.getRuntime().freeMemory()) + " bytes");
 		System.out.println();
